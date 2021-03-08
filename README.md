@@ -16,7 +16,7 @@ For more information about the project check the website :link:[PolkaMusic](http
 
 ```
 git clone https://github.com/polkamusic/polkamusic
-cd polkamusic:
+cd polkamusic
 ```
 - [x] Install RustLang with necessary dependencies
 
