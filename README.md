@@ -12,13 +12,13 @@ For more information about the project check the website :link:[PolkaMusic](http
 
 #### Prerequisites
 
-[x] Clone this repo and update the submodules:
+- [x] Clone this repo and update the submodules:
 
 ```
 git clone https://github.com/polkamusic/polkamusic
 cd polkamusic:
 ```
-[x] Install RustLang with necessary dependencies
+- [x] Install RustLang with necessary dependencies
 
 ### Commands
 
