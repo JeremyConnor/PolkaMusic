@@ -1,6 +1,6 @@
-# Substrate Node Template
+# PolkaMusic
 
-A fresh FRAME-based [Substrate](https://www.substrate.io/) node, ready for hacking :rocket:
+PolkaMusic is a public, [substrate](https://github.com/paritytech/substrate) based music streaming platform built using [substrate-node-template](https://github.com/substrate-developer-hub/substrate-node-template), with on-chain governance by $POLM holders and forkless blockchain upgrade.
 
 ## Getting Started
 
