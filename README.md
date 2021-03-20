@@ -57,6 +57,8 @@ Command to purge the development chain's state:
 ./target/release/node-template purge-chain --dev
 ```
 
+#Specs
+- This chain uses ```substrate-node-template``` v3.0.0
 
 
 
