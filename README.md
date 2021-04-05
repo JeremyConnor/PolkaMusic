@@ -10,7 +10,7 @@ PolkaMusic is a [substrate](https://github.com/paritytech/substrate) based publi
 
 > For more information about the project check the website :link:[PolkaMusic](https://polkamusic.io), the current version of PolkaMusic.io hosts a fully functional streaming platform that will connect to the “Smart Streaming Platform (SSP)” WASM Module.
 
-### Project Details 
+## Project Details 
 **Architecture**
 
 As a first step, a “Smart Streaming Platform (SSP)” WASM Module will be created that will allows music entrepreneurs to be a part in the genesis of a brand new SSP microeconomy that rewards the artists and the respected content creators autonomously. While initializing the module, the SSP developer (initial admin) will be able to customize deployment parameters such as token name, initial balance, inflation setting, etc.
