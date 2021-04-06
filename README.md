@@ -16,7 +16,7 @@ PolkaMusic is a [substrate](https://github.com/paritytech/substrate) based publi
 
 As a first step, a “Smart Streaming Platform (SSP)” WASM Module will be created that will allow music entrepreneurs to be a part in the genesis of a brand new SSP microeconomy that rewards the artists and the respected content creators autonomously. While initializing the module, the SSP developer (initial admin) will be able to customize deployment parameters such as token name, initial balance, inflation setting, etc.
 
-![Smart Streaming Platform (SSP) Module](sspM.png)
+![Smart Streaming Platform (SSP) Module](https://user-images.githubusercontent.com/76401865/113667186-09fdf600-96ce-11eb-970c-4f70c5895c9f.jpg)
 
 **$SSP_Token** - When a Smart Streaming Platform initializes the SSP WASM Module, the platform can issue its own token that can be used for royalty payments, membership fee and internal governance.
 
