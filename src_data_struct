@@ -1,0 +1,50 @@
+album_meta{
+album_artist: string
+album_producer: string
+album_title: string
+album_type: string
+c_line: string
+country_of_origin: string
+display_label_name: string
+explicit_: boolean
+genre_1: int
+master_label_name: string
+p_line: string
+part_of_album: boolean
+release_date: int
+release_year: int
+sales_start_date: int
+upc_or_ean: boolean
+}
+
+comp_meta{
+PRO: string
+composition_title: string
+publishers: Array
+third_party_publishers: boolean
+writers: Array
+created: timestamp
+}
+
+distributions{
+distributions_comp: {payee: "username", bp: 10000}
+distributions_master: {payee: "username", bp: 10000}
+}
+
+track_meta{
+ISRC: ""
+genre_1: int
+genre_2: int
+p_line: string
+samples: boolean
+track_artists: Array
+0: {artist: "artist_name", aliases: "alias"}
+1: {artist: "artist_name", aliases: "alias"}
+track_duration: int
+track_no: int
+track_producer: string
+track_title: string
+track_volume: 0
+track_title: string
+ipfs: "file_multihash"
+}
