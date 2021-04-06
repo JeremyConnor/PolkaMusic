@@ -10,16 +10,17 @@ PolkaMusic is a [substrate](https://github.com/paritytech/substrate) based publi
 
 > For more information about the project check the website :link:[PolkaMusic](https://polkamusic.io), the current version of PolkaMusic.io hosts a fully functional streaming platform that will connect to the “Smart Streaming Platform (SSP)” WASM Module.
 
-## Project Details 
+## Project Details
+
 **Architecture**
 
-As a first step, a “Smart Streaming Platform (SSP)” WASM Module will be created that will allows music entrepreneurs to be a part in the genesis of a brand new SSP microeconomy that rewards the artists and the respected content creators autonomously. While initializing the module, the SSP developer (initial admin) will be able to customize deployment parameters such as token name, initial balance, inflation setting, etc.
+As a first step, a “Smart Streaming Platform (SSP)” WASM Module will be created that will allow music entrepreneurs to be a part in the genesis of a brand new SSP microeconomy that rewards the artists and the respected content creators autonomously. While initializing the module, the SSP developer (initial admin) will be able to customize deployment parameters such as token name, initial balance, inflation setting, etc.
 
 ![Smart Streaming Platform (SSP) Module](sspM.png)
 
 **$SSP_Token** - When a Smart Streaming Platform initializes the SSP WASM Module, the platform can issue its own token that can be used for royalty payments, membership fee and internal governance.
 
-**Custom Inflation Logic** - In order to pay the artists in $SSP_Token, a daily reward pool must be created that results in inflation of $SSP_Token supply. 
+**Custom Inflation Logic** - In order to pay the artists in $SSP_Token, a daily reward pool must be created that results in inflation of $SSP_Token supply.
 
 **Smart Record Contracts (SRC)** - Artists can create Smart Record Contracts for each song, containing meta data such as song name, license and the wallet information of multiple stakeholders.
 
@@ -27,19 +28,20 @@ As a first step, a “Smart Streaming Platform (SSP)” WASM Module will be crea
 
 **Royalty Splitter** - Whenever a payment is made to a Smart Record Contract, the payment is automatically split between the constituent band member’s wallets based on weights assigned during SRC creation.
 
-**Autonomous Royalty Payments** - Processes the stream reports in a rolling 24 hours period by autonomously calculating the play_time against the usage of the whole platform in the past 24 hours and paying out of the reward pool. 
+**Autonomous Royalty Payments** - Processes the stream reports in a rolling 24 hours period by autonomously calculating the play_time against the usage of the whole platform in the past 24 hours and paying out of the reward pool.
 
 ### Build & Run Node
 
 #### Prerequisites
 
-- [x] Clone this repo and update the submodules:
+- [X] Clone this repo and update the submodules:
 
 ```
 git clone https://github.com/polkamusic/polkamusic
 cd polkamusic
 ```
-- [x] Install RustLang with necessary dependencies
+
+- [X] Install RustLang with necessary dependencies
 
 ### Commands
 
@@ -77,7 +79,5 @@ Command to purge the development chain's state:
 ```
 
 ### Specs
+
 - This chain uses ```substrate-node-template``` v3.0.0
-
-
-

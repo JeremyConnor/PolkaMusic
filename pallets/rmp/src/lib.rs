@@ -4,8 +4,12 @@
 
 use codec::{Decode, Encode};
 use core::result::Result;
+
+// use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, ensure, 
+// 	sp_std::prelude::*, traits::EnsureOrigin};
+
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, ensure, 
-	sp_std::prelude::*, traits::EnsureOrigin};
+	sp_std::prelude::*};
 use frame_system::ensure_signed;
 use sp_std::vec::Vec;
 
@@ -23,6 +27,11 @@ pub const COMPOSER_MAX_LENGTH: usize = 10;
 pub const LYRICIST_MAX_LENGTH: usize = 10;
 pub const YOR_MAX_LENGTH: usize = 4;
 pub const SONG_MAX_PROPS: usize = 6;
+
+pub trait Config: frame_system::Config + timestamp::Config {
+	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
+	// type CreateRoleOrigin: EnsureOrigin<Self::Origin>;
+}
 
 // Custom types
 pub type SongId = Vec<u8>;
@@ -88,11 +97,6 @@ impl MusicProperty {
     }
 }
 
-pub trait Config: frame_system::Config + timestamp::Config {
-	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
-	type CreateRoleOrigin: EnsureOrigin<Self::Origin>;
-}
-
 // The pallet's runtime storage items.
 // https://substrate.dev/docs/en/knowledgebase/runtime/storage
 decl_storage! {
@@ -131,9 +135,9 @@ decl_module! {
 		type Error = Error<T>;
 		fn deposit_event() = default;
 
-		#[weight = 10_000 + T::DbWeight::get().writes(1)]
+		#[weight = 10_000]
 		pub fn register_music(origin, id: SongId, owner: T::AccountId, props: Option<Vec<MusicProperty>>) -> dispatch::DispatchResult {
-            T::CreateRoleOrigin::ensure_origin(origin.clone())?;
+            // T::CreateRoleOrigin::ensure_origin(origin.clone())?;
             let who = ensure_signed(origin)?;
 
             // Validate song ID
@@ -201,19 +205,19 @@ impl<T: Config> Module<T> {
                     Error::<T>::SongInvalidSongName
                 );
                 ensure!(
-                    prop.value().len() <= ARTIST_NAME_MAX_LENGTH,
+                    prop.artist().len() <= ARTIST_NAME_MAX_LENGTH,
                     Error::<T>::SongInvalidArtistName
                 );
 				ensure!(
-                    prop.value().len() <= COMPOSER_MAX_LENGTH,
+                    prop.composer().len() <= COMPOSER_MAX_LENGTH,
                     Error::<T>::SongInvalidComposer
                 );
 				ensure!(
-                    prop.value().len() <= LYRICIST_MAX_LENGTH,
+                    prop.lyricist().len() <= LYRICIST_MAX_LENGTH,
                     Error::<T>::SongInvalidLyricist
                 );
 				ensure!(
-                    prop.value().len() <= YOR_MAX_LENGTH,
+                    prop.year().len() <= YOR_MAX_LENGTH,
                     Error::<T>::SongInvalidYOR
 				);
             }

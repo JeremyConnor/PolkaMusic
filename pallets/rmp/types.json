@@ -1,0 +1,21 @@
+{
+    "SongName": "Vec<u8>",
+    "ArtistName": "Vec<u8>",
+    "Composer": "Vec<u8>",
+    "Lyricist": "Vec<u8>",
+    "YOR": "Vec<u8>",
+    "MusicProperty": {
+        "name": "SongName",
+        "artist": "ArtistName",
+        "composer": "Composer",
+        "lyricist": "Lyricist",
+        "year": "YOR"
+    },
+    "SongId": "Vec<u8>",
+    "MusicData": {
+        "id": "SongId",
+        "owner": "AccountId",
+        "props": "Option<Vec<MusicProperty>>",
+        "registered": "Moment"
+    }
+}
