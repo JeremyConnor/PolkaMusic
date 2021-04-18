@@ -1,4 +1,5 @@
 //! # Rights Management Pallet
+//! David Testing with Initial Commit
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
