@@ -1,5 +1,5 @@
 //! # Rights Management Pallet
-//! David Testing with Initial Commit
+//! LAST EDIT: DAVID HIDALGO-GATO, 4/18/21
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -37,10 +37,13 @@ pub trait Config: frame_system::Config + timestamp::Config {
 // Custom types
 pub type SongId = Vec<u8>;
 pub type SongName = Vec<u8>;
+pub type AlbumTitle = Vec<u8>;
 pub type ArtistName = Vec<u8>;
 pub type Composer = Vec<u8>;
 pub type Lyricist = Vec<u8>;
 pub type YOR = Vec<u8>;
+pub type Alias = Vec<u8>;
+pub type IpfsHash = u64;
 
 
 #[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
@@ -64,6 +67,11 @@ pub struct MusicProperty {
 	composer: Composer,
 	lyricist: Lyricist,
 	year: YOR,
+}
+
+pub struct ArtistAlias {
+    artist: String,
+    aliases: Alias
 }
 
 impl MusicProperty {
@@ -97,6 +105,69 @@ impl MusicProperty {
         self.year.as_ref()
     }
 }
+
+pub struct Album<AccountId, Moment> {
+    owner: AccountId,
+    album_artist: ArtistName,
+    album_producer: Vec<u8>,
+    album_title: Vec<u8>,
+    album_type: Vec<u8>,
+    c_line: Vec<u8>,
+    country_of_origin: Vec<u8>,
+    display_label_name: Vec<u8>,
+    explicit_: bool,
+    genre_1: u32,
+    master_label_name: Vec<u8>,
+    p_line: Vec<u8>,
+    part_of_album: bool,
+    release_date: Moment,
+    sales_start_date: u32,
+    upc_or_ean: bool
+}
+
+pub struct Comp<Moment> {
+    pro: Vec<u8>,
+    composition_title: Vec<u8>,
+    publishers: Vec<Vec<u8>>,
+    third_party_publishers: bool,
+    writers: Vec<Vec<u8>>,
+    created: Moment
+}
+
+/*
+pub struct DistributionsComp {
+    payee: Composer,
+    bp: u32,
+}
+
+pub struct DistributionsMaster {
+    payee: ArtistName,
+    bp: u32,
+}
+
+pub mod Distributions {
+    distributions_comp: DistributionsComp;
+    distributions_master: DistributionsMaster;
+}
+*/
+
+pub struct Track{
+    isrc: Vec<u8>, // meant to create an empty string
+    genre_1: u32,
+    genre_2: u32,
+    p_line: Vec<u8>,
+    samples: bool,
+    track_artists: Vec<ArtistName>,
+    zero: ArtistAlias,
+    one: ArtistAlias,
+    track_duration: u32,
+    track_no: u32,
+    track_producer: Vec<u8>,
+    track_title: Vec<u8>,
+    track_volume: u32,
+    ipfs: IpfsHash,
+    }
+
 
 // The pallet's runtime storage items.
 // https://substrate.dev/docs/en/knowledgebase/runtime/storage
