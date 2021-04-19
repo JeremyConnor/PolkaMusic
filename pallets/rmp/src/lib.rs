@@ -1,5 +1,4 @@
 //! # Rights Management Pallet
-//! LAST EDIT: DAVID HIDALGO-GATO, 4/18/21
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -12,7 +11,7 @@ use core::result::Result;
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, ensure, 
 	sp_std::prelude::*};
 use frame_system::ensure_signed;
-use sp_std::vec::Vec;
+pub use sp_std::vec::Vec;
 
 #[cfg(test)]
 mod mock;
@@ -70,7 +69,7 @@ pub struct MusicProperty {
 }
 
 pub struct ArtistAlias {
-    artist: String,
+    artist: ArtistName,
     aliases: Alias
 }
 
@@ -134,22 +133,16 @@ pub struct Comp<Moment> {
     created: Moment
 }
 
-/*
-pub struct DistributionsComp {
-    payee: Composer,
-    bp: u32,
+pub mod distributions {
+    pub struct DistributionsMaster {
+        payee: super::ArtistName,
+        bp: u32,
+    }
+    pub struct DistributionsComp {
+        payee: super::Composer,
+        bp: u32,
+    }
 }
-
-pub struct DistributionsMaster {
-    payee: ArtistName,
-    bp: u32,
-}
-
-pub mod Distributions {
-    distributions_comp: DistributionsComp;
-    distributions_master: DistributionsMaster;
-}
-*/
 
 pub struct Track{
     isrc: Vec<u8>, // meant to create an empty string
