@@ -39,6 +39,9 @@ decl_event!(
 		/// Event documentation should end with an array that provides descriptive names for event
 		/// parameters. [something, who]
 		SomethingStored(u32, AccountId),
+
+        /// Alerting the system that royalties have been split
+        RoyaltySplit(u32, Vec<AccountId>),
 	}
 );
 
@@ -49,6 +52,11 @@ decl_error! {
 		NoneValue,
 		/// Errors should have helpful documentation associated with them.
 		StorageOverflow,
+
+        /// Errors that could happen while splitting:
+        NegativeBalance, // If someone tries to split a negative balance
+        TokenNotAvailable, // If those tokens cannot be created
+
 	}
 }
 
