@@ -1,6 +1,6 @@
 [package]
 authors = ['PolkaMusic core-dev']
-description = 'A decentralized music ecosystem on Polkadot'
+description = 'Royalty Splitter Pallet'
 edition = '2018'
 homepage = 'https://polkamusic.io'
 license = 'Unlicense'
