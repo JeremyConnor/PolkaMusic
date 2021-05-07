@@ -9,7 +9,8 @@ NOTE: This pallet implements the aforementionned process in a simplified way, th
 ## Usage
 
 To get music rights on “Smart Streaming Platform (SSP)”, one must send a transaction with a `rightsMgmtPortal.registerMusic` extrinsic with the following arguments:
-- `id` as the Song ID, typically this would be a ISRC code (International Standard Recording Code) or ISWC code (International Standard Musical Work Code) or similar.
+- `src_id` would be a music file hash that will be used as a Key to Map Music Records Data. 
+- `song_id` typically this would be a ISRC code (International Standard Recording Code) or ISWC code (International Standard Musical Work Code) or similar.
 - `owner` as the Substrate Account representing the music entrepreneur owning the music rights.
 - `props` which is a series of properties describing the music information. Typically, there would at least be a textual description.
 
