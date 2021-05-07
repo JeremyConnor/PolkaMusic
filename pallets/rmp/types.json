@@ -4,18 +4,20 @@
     "Composer": "Vec<u8>",
     "Lyricist": "Vec<u8>",
     "YOR": "Vec<u8>",
-    "MusicProperty": {
-        "name": "SongName",
-        "artist": "ArtistName",
-        "composer": "Composer",
-        "lyricist": "Lyricist",
-        "year": "YOR"
+    "TestData": {
+      "name": "SongName",
+      "artist": "ArtistName",
+      "composer": "Composer",
+      "lyricist": "Lyricist",
+      "year": "YOR"
     },
+    "SrcId": "Vec<u8>",
     "SongId": "Vec<u8>",
     "MusicData": {
-        "id": "SongId",
-        "owner": "AccountId",
-        "props": "Option<Vec<MusicProperty>>",
-        "registered": "Moment"
+      "src_id": "SrcId",
+      "owner": "AccountId",
+      "song_id": "SongId",
+      "props": "Option<Vec<TestData>>",
+      "registered": "Moment"
     }
-}
+  }

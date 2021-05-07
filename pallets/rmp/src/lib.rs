@@ -4,12 +4,8 @@
 
 use codec::{Decode, Encode};
 use core::result::Result;
-
-// use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, ensure, 
-// 	sp_std::prelude::*, traits::EnsureOrigin};
-
 use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, ensure, 
-	sp_std::prelude::*};
+ 	sp_std::prelude::*};
 use frame_system::ensure_signed;
 pub use sp_std::vec::Vec;
 
@@ -20,20 +16,21 @@ mod mock;
 mod tests;
 
 // General constraints to limit data size
+pub const SRC_ID_MAX_LENGTH: usize = 36;
 pub const SONG_ID_MAX_LENGTH: usize = 36;
 pub const SONG_NAME_MAX_LENGTH: usize = 20;
-pub const ARTIST_NAME_MAX_LENGTH: usize = 10;
-pub const COMPOSER_MAX_LENGTH: usize = 10;
-pub const LYRICIST_MAX_LENGTH: usize = 10;
+pub const ARTIST_NAME_MAX_LENGTH: usize = 20;
+pub const COMPOSER_MAX_LENGTH: usize = 20;
+pub const LYRICIST_MAX_LENGTH: usize = 20;
 pub const YOR_MAX_LENGTH: usize = 4;
 pub const SONG_MAX_PROPS: usize = 6;
 
 pub trait Config: frame_system::Config + timestamp::Config {
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Config>::Event>;
-	// type CreateRoleOrigin: EnsureOrigin<Self::Origin>;
 }
 
 // Custom types
+pub type SrcId = Vec<u8>;
 pub type SongId = Vec<u8>;
 pub type SongName = Vec<u8>;
 pub type AlbumTitle = Vec<u8>;
@@ -42,25 +39,34 @@ pub type Composer = Vec<u8>;
 pub type Lyricist = Vec<u8>;
 pub type YOR = Vec<u8>;
 pub type Alias = Vec<u8>;
-pub type IpfsHash = u64;
-
 
 #[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
 pub struct MusicData<AccountId, Moment> {
-    // The song ID would typically be a ISRC code (International Standard Recording Code),
-    // or ISWC code (International Standard Musical Work Code), or similar.
-    id: SongId,
+    // music file hash
+    src_id: SrcId,
+    
     // This is account that represents the ownership of the music created.
     owner: AccountId,
-    // This is a series of properties describing the music data.
-    props: Option<Vec<MusicProperty>>,
+
+    // The song ID would typically be a ISRC code (International Standard Recording Code),
+    // or ISWC code (International Standard Musical Work Code), or similar.
+    song_id: Option<SongId>,
+
     // Timestamp (approximate) at which the music was registered on-chain.
     registered: Moment,
+
+    // This is a series of properties describing the music test data.
+    props: Option<Vec<TestData>>,
+    // album: Option<Vec<Album<Moment>>>,
+    // track: Option<Vec<Track>>,
+    // artist_alias: Option<Vec<ArtistAlias>>,
+    // comp: Option<Vec<Comp>>,
+    // distributions_comp: Option<Vec<DistributionsComp>>,
+    // distributions_master: Option<Vec<DistributionsMaster>>,
 }
 
-// Contains a name-value pair for a music property
 #[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
-pub struct MusicProperty {
+pub struct TestData {
     name: SongName,
     artist: ArtistName,
 	composer: Composer,
@@ -68,12 +74,70 @@ pub struct MusicProperty {
 	year: YOR,
 }
 
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
 pub struct ArtistAlias {
     artist: ArtistName,
     aliases: Alias
 }
 
-impl MusicProperty {
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
+pub struct Album<Moment> {
+    album_artist: ArtistName,
+    album_producer: Vec<u16>,
+    album_title: Vec<u16>,
+    album_type: Vec<u16>,
+    c_line: Vec<u16>,
+    country_of_origin: Vec<u8>,
+    display_label_name: Vec<u16>,
+    explicit_: bool,
+    genre_1: u32,
+    master_label_name: Vec<u16>,
+    p_line: Vec<u16>,
+    part_of_album: bool,
+    release_date: Moment,
+    sales_start_date: Vec<u16>,
+    upc_or_ean: bool
+}
+
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
+pub struct Track {
+    track_no: u32,
+    track_producer: Vec<u8>,
+    track_title: Vec<u8>,
+    track_volume: u32,
+    track_duration: Vec<u32>,
+    genre_1: Vec<u8>,
+    genre_2: Vec<u8>,
+    p_line: Vec<u8>,
+    samples: bool,
+    track_artists: Vec<ArtistName>,
+    zero: ArtistAlias,
+    one: ArtistAlias,
+}
+
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
+pub struct Comp<Moment> {
+    pro: Vec<u16>,
+    composition_title: Vec<u16>,
+    publishers: Vec<Vec<u16>>,
+    third_party_publishers: bool,
+    writers: Vec<Vec<u16>>,
+    created: Moment,
+}
+
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
+pub struct DistributionsMaster {
+	payee: ArtistName,
+	bp: u32,
+}
+
+#[derive(Encode, Decode, Clone, PartialEq, Eq, Debug)]
+pub struct DistributionsComp {
+	payee: Composer,
+	bp: u32,
+}
+
+impl TestData {
     pub fn new(name: &[u8], artist: &[u8], composer: &[u8], lyricist: &[u8], year: &[u8]) -> Self {
         Self {
             name: name.to_vec(),
@@ -105,69 +169,13 @@ impl MusicProperty {
     }
 }
 
-pub struct Album<AccountId, Moment> {
-    owner: AccountId,
-    album_artist: ArtistName,
-    album_producer: Vec<u8>,
-    album_title: Vec<u8>,
-    album_type: Vec<u8>,
-    c_line: Vec<u8>,
-    country_of_origin: Vec<u8>,
-    display_label_name: Vec<u8>,
-    explicit_: bool,
-    genre_1: u32,
-    master_label_name: Vec<u8>,
-    p_line: Vec<u8>,
-    part_of_album: bool,
-    release_date: Moment,
-    sales_start_date: u32,
-    upc_or_ean: bool
-}
-
-pub struct Comp<Moment> {
-    pro: Vec<u8>,
-    composition_title: Vec<u8>,
-    publishers: Vec<Vec<u8>>,
-    third_party_publishers: bool,
-    writers: Vec<Vec<u8>>,
-    created: Moment
-}
-
-pub mod distributions {
-    pub struct DistributionsMaster {
-        payee: super::ArtistName,
-        bp: u32,
-    }
-    pub struct DistributionsComp {
-        payee: super::Composer,
-        bp: u32,
-    }
-}
-
-pub struct Track{
-    isrc: Vec<u8>, // meant to create an empty string
-    genre_1: u32,
-    genre_2: u32,
-    p_line: Vec<u8>,
-    samples: bool,
-    track_artists: Vec<ArtistName>,
-    zero: ArtistAlias,
-    one: ArtistAlias,
-    track_duration: u32,
-    track_no: u32,
-    track_producer: Vec<u8>,
-    track_title: Vec<u8>,
-    track_volume: u32,
-    ipfs: IpfsHash,
-    }
-
-
 // The pallet's runtime storage items.
 // https://substrate.dev/docs/en/knowledgebase/runtime/storage
 decl_storage! {
-	trait Store for Module<T: Config> as RightsMgmtPortal {
-		pub MusicCollections get(fn music_by_id): map hasher(blake2_128_concat) SongId => Option<MusicData<T::AccountId, T::Moment>>;
-        pub OwnerOf get(fn owner_of): map hasher(blake2_128_concat) SongId => Option<T::AccountId>;
+	trait Store for Module<T: Config> as RightsMgmtPallet {
+		pub MusicCollections get(fn music_by_src_id): map hasher(blake2_128_concat) SrcId => Option<MusicData<T::AccountId, T::Moment>>;
+        pub SrcCollections get(fn products_of_org): map hasher(blake2_128_concat) T::AccountId => Vec<SrcId>;
+        pub OwnerOf get(fn owner_of): map hasher(blake2_128_concat) SrcId => Option<T::AccountId>;
 	}
 }
 
@@ -176,13 +184,16 @@ decl_storage! {
 decl_event!(
 	pub enum Event<T> where AccountId = <T as frame_system::Config>::AccountId {
 		/// Event documentation should end with an array that provides descriptive names for event
-		MusicRegistered(AccountId, SongId, AccountId),
+		SrcCreated(AccountId, SrcId, SongId, AccountId),
 	}
 );
 
 // Errors inform users that something went wrong.
 decl_error! {
 	pub enum Error for Module<T: Config> {
+        SrcIdMissing,
+        SrcIdTooLong,
+        SrcIdExists,
 		SongIdMissing,
         SongIdTooLong,
         SongIdExists,
@@ -201,32 +212,36 @@ decl_module! {
 		fn deposit_event() = default;
 
 		#[weight = 10_000]
-		pub fn register_music(origin, id: SongId, owner: T::AccountId, props: Option<Vec<MusicProperty>>) -> dispatch::DispatchResult {
-            // T::CreateRoleOrigin::ensure_origin(origin.clone())?;
+		pub fn register_music(origin, src_id: SrcId, song_id: SongId, owner: T::AccountId, props: Option<Vec<TestData>>) -> dispatch::DispatchResult {
+            
             let who = ensure_signed(origin)?;
 
+            // Validate music file hash
+            Self::validate_src_id(&src_id)?;
+
             // Validate song ID
-            Self::validate_song_id(&id)?;
+            Self::validate_song_id(&song_id)?;
 
             // Validate song props
             Self::validate_song_props(&props)?;
 
-            // Check song doesn't exist yet (1 DB read)
-            Self::validate_new_song(&id)?;
+            // Check SRC doesn't exist yet (1 DB read)
+            Self::validate_new_src_id(&src_id)?;
 
             // Create a song instance
             let song = Self::new_song()
-                .identified_by(id.clone())
+                .verified_by(src_id.clone())
+                .identified_by(Some(song_id.clone()))
                 .owned_by(owner.clone())
                 .registered_on(<timestamp::Module<T>>::get())
                 .with_props(props)
                 .build();
 
-            // Add product & ownerOf (2 DB writes)
-            <MusicCollections<T>>::insert(&id, song);
-            <OwnerOf<T>>::insert(&id, &owner);
+            <MusicCollections<T>>::insert(&src_id, song);
+            <SrcCollections<T>>::append(&owner, &src_id);
+            <OwnerOf<T>>::insert(&src_id, &owner);
 
-            Self::deposit_event(RawEvent::MusicRegistered(who, id, owner));
+            Self::deposit_event(RawEvent::SrcCreated(who, src_id, song_id, owner));
 
             Ok(())
         }
@@ -239,26 +254,37 @@ impl<T: Config> Module<T> {
         SongBuilder::<T::AccountId, T::Moment>::default()
     }
 
-    pub fn validate_song_id(id: &[u8]) -> Result<(), Error<T>> {
-        // Basic song ID validation
-        ensure!(!id.is_empty(), Error::<T>::SongIdMissing);
+    pub fn validate_src_id(src_id: &[u8]) -> Result<(), Error<T>> {
+        // File Hash validation
+        ensure!(!src_id.is_empty(), Error::<T>::SrcIdMissing);
         ensure!(
-            id.len() <= SONG_ID_MAX_LENGTH,
+            src_id.len() <= SRC_ID_MAX_LENGTH,
+            Error::<T>::SrcIdTooLong
+        );
+        Ok(())
+    }
+
+    pub fn validate_song_id(song_id: &[u8]) -> Result<(), Error<T>> {
+        // Basic song ID validation
+        ensure!(!song_id.is_empty(), Error::<T>::SongIdMissing);
+        ensure!(
+            song_id.len() <= SONG_ID_MAX_LENGTH,
             Error::<T>::SongIdTooLong
         );
         Ok(())
     }
 
-    pub fn validate_new_song(id: &[u8]) -> Result<(), Error<T>> {
-        // Song existence check
+    pub fn validate_new_src_id(src_id: &[u8]) -> Result<(), Error<T>> {
+        // SRC existence check
         ensure!(
-            !<MusicCollections<T>>::contains_key(id),
-            Error::<T>::SongIdExists
+            !<MusicCollections<T>>::contains_key(src_id),
+            Error::<T>::SrcIdExists
         );
         Ok(())
     }
 
-    pub fn validate_song_props(props: &Option<Vec<MusicProperty>>) -> Result<(), Error<T>> {
+
+    pub fn validate_song_props(props: &Option<Vec<TestData>>) -> Result<(), Error<T>> {
         if let Some(props) = props {
             ensure!(
                 props.len() <= SONG_MAX_PROPS,
@@ -296,10 +322,13 @@ pub struct SongBuilder<AccountId, Moment>
 where
     AccountId: Default,
     Moment: Default,
-{
-    id: SongId,
+{   
+    src_id: SrcId,
+    song_id: Option<SongId>,
     owner: AccountId,
-    props: Option<Vec<MusicProperty>>,
+    props: Option<Vec<TestData>>,
+    // album: Option<Vec<Album<Moment>>>,
+    // track: Option<Vec<Track>>,
     registered: Moment,
 }
 
@@ -307,9 +336,13 @@ impl<AccountId, Moment> SongBuilder<AccountId, Moment>
 where
     AccountId: Default,
     Moment: Default,
-{
-    pub fn identified_by(mut self, id: SongId) -> Self {
-        self.id = id;
+{   
+    pub fn verified_by(mut self, src_id: SrcId) -> Self {
+        self.src_id = src_id;
+        self
+    }
+    pub fn identified_by(mut self, song_id: Option<SongId>) -> Self {
+        self.song_id = song_id;
         self
     }
 
@@ -318,11 +351,21 @@ where
         self
     }
 
-    pub fn with_props(mut self, props: Option<Vec<MusicProperty>>) -> Self {
+    pub fn with_props(mut self, props: Option<Vec<TestData>>) -> Self {
         self.props = props;
         self
     }
 
+    // pub fn with_album(mut self, album: Option<Vec<Album<Moment>>>) -> Self {
+    //     self.album = album;
+    //     self
+    // }
+
+    // pub fn with_track(mut self, track: Option<Vec<Track>>) -> Self {
+    //     self.track = track;
+    //     self
+    // }
+    
     pub fn registered_on(mut self, registered: Moment) -> Self {
         self.registered = registered;
         self
@@ -330,9 +373,12 @@ where
 
     pub fn build(self) -> MusicData<AccountId, Moment> {
         MusicData::<AccountId, Moment> {
-            id: self.id,
+            song_id: self.song_id,
+            src_id: self.src_id,
             owner: self.owner,
             props: self.props,
+            // album: self.album,
+            // track: self.track,
             registered: self.registered,
         }
     }

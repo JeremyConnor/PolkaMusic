@@ -1,6 +1,6 @@
 [package]
 authors = ['PolkaMusic core-dev']
-description = 'A decentralized music ecosystem on Polkadot'
+description = 'Rights Managements Pallet'
 edition = '2018'
 homepage = 'https://polkamusic.io'
 license = 'Unlicense'
@@ -18,15 +18,11 @@ features = ['derive']
 package = 'parity-scale-codec'
 version = '2.0.0'
 
-[dependencies.timestamp]
-default_features = false
-package = 'pallet-timestamp'
-version = '3.0.0'
-
 [dependencies]
 frame-support = { default-features = false, version = '3.0.0' }
 frame-system = { default-features = false, version = '3.0.0' }
 sp-std = { default-features = false, version = '3.0.0' }
+timestamp = { default-features = false, package = 'pallet-timestamp', version = '3.0.0' }
 
 [dev-dependencies]
 serde = { version = "1.0.119" }
