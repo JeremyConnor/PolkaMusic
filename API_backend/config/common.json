@@ -1,0 +1,35 @@
+{
+  "APP_NAME": "node-template",
+  "DEVELOPMENT_KEYRING": true,
+  "CUSTOM_TYPES":{
+    "SongName": "Vec<u8>",
+    "ArtistName": "Vec<u8>",
+    "Composer": "Vec<u8>",
+    "Lyricist": "Vec<u8>",
+    "YOR": "Vec<u8>",
+    "payment_queryFeeDetails":"Vec<u8",
+    "system_unstable_networkState":"system_unstable_networkState",
+    "BlockLength":"Vec<u8>",
+    "BlockWeights":"Vec<u8>",
+    "ConsumedWeight,":"Vec<u8>",
+    "DeletedContract":"Vec<u8>",
+    "TestData": {
+      "name": "SongName",
+      "artist": "ArtistName",
+      "composer": "Composer",
+      "lyricist": "Lyricist",
+      "year": "YOR"
+    },
+    "SrcId": "Vec<u8>",
+    "SongId": "Vec<u8>",
+    "MusicData": {
+      "src_id": "SrcId",
+      "owner": "AccountId",
+      "song_id": "SongId",
+      "props": "Option<Vec<TestData>>",
+      "registered": "Moment"
+    }
+  }
+,
+  "RPC": {}
+}

@@ -1,0 +1,20 @@
+{
+  "name": "polkamusic_api",
+  "version": "1.0.0",
+  "description": "API for polkamusic using polkadot js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@polkadot/api": "^2.4.1",
+    "@polkadot/keyring": "^3.7.1",
+    "@polkadot/util": "^3.7.1",
+    "@polkadot/util-crypto": "^3.7.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "minimist": "^1.2.5"
+  }
+}
